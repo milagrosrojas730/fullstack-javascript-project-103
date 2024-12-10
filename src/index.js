@@ -3,7 +3,7 @@ import path from 'path';
 import _ from 'lodash';
 import yaml from 'js-yaml';
 
-const genDiff = (filepath1, filepath2, format = 'stylish') => {
+const genDiff = (filepath1, filepath2) => {
 const readFile = (filepath) => {
     const ext = path.extname(filepath);
     if( ext === '.json') {
