@@ -27,10 +27,6 @@ const renderFns = {
     return `${getIndentation(depth)}  ${key}: {\n${nestedChildren.join('\n')}\n${getIndentation(depth)}  }`;
   },
 
-  [ADD_VALUE]: (node, depth) => `${getIndentation(depth)}+ ${node.key}: ${formatValue(node.value, depth, renderFns)}`,
-  [DELETED_VALUE]: (node, depth) => `${getIndentation(depth)}- ${node.key}: ${formatValue(node.value, depth, renderFns)}`,
-  [UNCHANGED_VALUE]: (node, depth) => `${getIndentation(depth)}  ${node.key}: ${formatValue(node.value, depth, renderFns)}`,
-
   [CHANGED_VALUE]: (node, depth) => {
     const { key, value1, value2 } = node;
     const formattedValue1 = `${getIndentation(depth)}- ${key}: ${formatValue(value1, depth, renderFns)}`;
