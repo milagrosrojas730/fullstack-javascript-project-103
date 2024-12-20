@@ -4,9 +4,9 @@ import genDiff from '../src/index.js';
 const getFixturePath = (filename) => path.resolve('__fixtures__', filename);
 
 test('Comparar JSON anidados', () => {
-const file1 = getFixturePath('file1.json');
-const file2 = getFixturePath('file2.json');
-const expected = `{
+  const file1 = getFixturePath('file1.json');
+  const file2 = getFixturePath('file2.json');
+  const expected = `{
 common: {
 + follow: false
 setting1: Value 1
@@ -50,5 +50,5 @@ setting6: {
         fee: 100500
     }
 }`;
-expect(genDiff(file1, file2)).toBe(expected);
+  expect(genDiff(file1, file2)).toBe(expected);
 });
