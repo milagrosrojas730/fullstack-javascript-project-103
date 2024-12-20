@@ -31,7 +31,7 @@ const diffLines = allKeys.map((key) => {
         `  + ${key}: ${file2[key]}`,
     ].join('\n');
     }
-    return `    ${key}: ${file1[key]}`;
+    return `${key}: ${file1[key]}`;
 });
 
 
