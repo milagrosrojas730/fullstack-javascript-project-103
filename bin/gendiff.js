@@ -12,8 +12,8 @@ program
   .argument('<filepath2>', 'path to the second file')
   .helpOption('-h, --help', 'output usage information')
   .option('-f, --format <type>', 'output format (default: stylish)', 'stylish')
-  .action((filepath1, filepath2, options) => {
-    const diff = genDiff(filepath1, filepath2, options.format);
+  .action((file1, file2, options) => {
+    const diff = genDiff(file1, file2, options.format);
     console.log(diff);
   });
 

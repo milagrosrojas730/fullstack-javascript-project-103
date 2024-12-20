@@ -9,8 +9,7 @@
     "test": "jest --watch",
     "lint": "npx eslint .",
     "lint:fix": "npx eslint --fix .",
-    "prepush": "npx lint-staged",
-    "watch:test": "jest --watchAll"
+    "prepush": "npx lint-staged"
   },
   "repository": {
     "type": "git",

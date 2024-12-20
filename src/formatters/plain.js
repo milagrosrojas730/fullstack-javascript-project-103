@@ -10,9 +10,9 @@ const ROOT_VALUE = 'root';
 const buildPropertyPath = (property, ancestors) => [...ancestors, property].join('.');
 
 const formatValue = (value) => {
-if (value === null) return value;
-if (_.isObject(value)) return '[complex value]';
-return typeof value === 'string' ? `'${value}'` : String(value);
+  if (value === null) return value;
+  if (_.isObject(value)) return '[complex value]';
+  return typeof value === 'string' ? `'${value}'` : String(value);
 };
 
 const nodeHandlers = {
