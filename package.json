@@ -7,7 +7,7 @@
   "scripts": {
     "start": "gendiff",
     "test": "jest --watch",
-    "lint": "eslint .",
+    "lint": "sudo eslint .",
     "lint:fix": "npx eslint --fix .",
     "prepush": "npx lint-staged"
   },
