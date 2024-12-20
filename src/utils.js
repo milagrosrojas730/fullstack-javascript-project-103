@@ -8,12 +8,19 @@ const CHANGED_VALUE = 'changed';
 const ROOT_VALUE = 'root';
 
 const getIndentation = (depth, spacesCount = 4) => ' '.repeat(depth * spacesCount - 2);
+
 const formatValue = (data, depth, renderFns) => {
   if (!_.isObject(data)) return String(data);
-  const entries = Object.entries(data).map(([key, value]) => renderFns[UNCHANGED_VALUE]({ key, value }, depth + 1, formatValue));
+
+  const entries = Object.entries(data).map(([key, value]) => renderFns[UNCHANGED_VALUE](
+    { key, value },
+    depth + 1,
+    formatValue,
+  ));
 
   return `{\n${entries.join('\n')}\n${getIndentation(depth)}  }`;
 };
+
 const renderFns = {
   [ROOT_VALUE]: ({ children }, depth, iterate) => {
     const renderedChildren = children.flatMap((child) => iterate(child, depth + 1, iterate));
@@ -33,6 +40,7 @@ const renderFns = {
     return [formattedValue1, formattedValue2].join('\n');
   },
 };
+
 const formatNode = (node, depth) => renderFns[node.type](node, depth, formatNode);
 const stylish = (diff) => formatNode(diff, 0);
 const stylishWithBraces = (diff) => {
