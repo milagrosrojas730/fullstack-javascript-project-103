@@ -18,17 +18,18 @@ const testGenDiff = (filepath1, filepath2, format, expectedResult) => {
 const testGenDiffJSON = (filepath1, filepath2, expectedResult) => {
   expect(JSON.parse(genDiff(filepath1, filepath2, 'json'))).toEqual(expectedResult);
 };
+
 test('Format for stylish Result - YAML File', () => {
   const [filepath1, filepath2] = generateFilePaths('file1-y', 'file2-y', 'yaml');
-  expect(() => testGenDiff(filepath1, filepath2, 'stylish', styres)).not.toThrow();
+  testGenDiff(filepath1, filepath2, 'stylish', styres);
 });
 
 test('Format for Result - YAML File', () => {
   const [filepath1, filepath2] = generateFilePaths('file1-y', 'file2-y', 'yaml');
-  expect(() => testGenDiff(filepath1, filepath2, 'plain', result)).not.toThrow();
+  testGenDiff(filepath1, filepath2, 'plain', result);
 });
 
 test('Format for JSON Result - JSON File', () => {
   const [filepath1, filepath2] = generateFilePaths('file1', 'file2', 'json');
-  expect(() => testGenDiffJSON(filepath1, filepath2, jsoret)).not.toThrow();
+  testGenDiffJSON(filepath1, filepath2, jsoret);
 });

@@ -1,6 +1,6 @@
-const fs = require('fs');
-const path = require('path');
-const yaml =require('js-yaml');
+import fs from 'fs';
+import path from 'path';
+import yaml from 'js-yaml';
 
 const parsers = (filepath) => {
   const absolutePath = path.resolve(process.cwd(), filepath);

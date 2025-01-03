@@ -1,4 +1,4 @@
-const path = require('path');
+import path from 'path';
 import getFixturePath from '../src/getFixturePath.js';
 
 test('getFixturePath should return the correct path', () => {
