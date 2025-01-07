@@ -1,5 +1,5 @@
 import path from 'path';
 
-const getFixturePath = (filename) => path.join('__fixtures__', filename);
+const getPath = (filename) => path.join(__dirname, '__fixtures__', filename);
 
-export default getFixturePath;
+export default getPath;
