@@ -1,9 +1,9 @@
 import path from 'path';
-import { getFixturePath } from '../src/utils.js';
+import getPath from '../src/getFixturePath.js';
 
 test('getFixturePath should return the correct path', () => {
   const filename = 'file1.json';
   const expectedPath = path.resolve('__fixtures__', filename);
 
-  expect(getFixturePath(filename)).toBe(expectedPath);
+  expect(getPath(filename)).toBe(expectedPath);
 });
