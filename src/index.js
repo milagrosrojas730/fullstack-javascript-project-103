@@ -2,7 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import YAML from 'yaml';
 import formatDiff from './formatters/index.js';
-// import { stylish } from './utils.js';
 
 const determineFormat = (filePath) => {
   const ext = path.extname(filePath).slice(1);
