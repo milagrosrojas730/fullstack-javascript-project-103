@@ -6,8 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "gendiff",
-    "test": "jest --coverage --coverageReporters lcov",
-    "lint": "npx eslint .",
+    "test": "jest --coverage --coverageReporters lcov",    "lint": "npx eslint .",
     "lint:fix": "npx eslint --fix .",
     "prepush": "npx lint-staged"
   },
@@ -20,12 +19,9 @@
     "yaml": "^2.6.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.26.0",
-    "@babel/preset-env": "^7.26.0",
     "@eslint/eslintrc": "^3.1.0",
     "@eslint/js": "^9.7.0",
     "@jest/globals": "^29.7.0",
-    "babel-jest": "^29.7.0",
     "eslint": "^8.57.0",
     "eslint-config-airbnb-base": "^15.0.0",
     "eslint-plugin-import": "^2.29.1",

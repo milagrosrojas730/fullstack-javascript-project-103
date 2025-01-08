@@ -1,25 +1,74 @@
-import _ from 'lodash';
+import fs from 'fs';
+import path from 'path';
+import YAML from 'yaml';
+import formatDiff from './formatters/index.js';
+// import { stylish } from './utils.js';
 
-const genDiff = (file1, file2) => {
-  const allKeys = _.sortBy(_.union(Object.keys(file1), Object.keys(file2)));
+const determineFormat = (filePath) => {
+  const ext = path.extname(filePath).slice(1);
+  if (ext === 'json' || ext === 'yaml' || ext === 'yml') {
+    return ext;
+  }
+  throw new Error(`Unsupported file format: ${ext}`);
+};
 
-  const diffLines = allKeys.map((key) => {
-    if (!_.has(file2, key)) {
-      return `  - ${key}: ${file1[key]}`;
+const parseFile = (filePath) => {
+  const format = determineFormat(filePath);
+  const content = fs.readFileSync(filePath, 'utf-8');
+
+  if (format === 'json') {
+    return JSON.parse(content);
+  }
+  if (format === 'yaml' || format === 'yml') {
+    return YAML.parse(content);
+  }
+
+  return null;
+};
+
+const insertSorted = (acc, key) => {
+  if (acc.length === 0 || acc[0] >= key) {
+    return [key, ...acc];
+  }
+  return [acc[0], ...insertSorted(acc.slice(1), key)];
+};
+
+const sortedKeys = (data1, data2) => {
+  const keys = [...new Set([...Object.keys(data1), ...Object.keys(data2)])];
+  return keys.reduce((acc, key) => insertSorted(acc, key), []);
+};
+
+const buildDiff = (data1, data2) => {
+  const keys = sortedKeys(data1, data2);
+
+  return keys.map((key) => {
+    if (!(key in data1)) {
+      return { key, type: 'added', value: data2[key] };
     }
-    if (!_.has(file1, key)) {
-      return `  + ${key}: ${file2[key]}`;
+    if (!(key in data2)) {
+      return { key, type: 'deleted', value: data1[key] };
     }
-    if (!_.isEqual(file1[key], file2[key])) {
-      return [
-        `  - ${key}: ${file1[key]}`,
-        `  + ${key}: ${file2[key]}`,
-      ].join('\n');
+    if (data1[key] !== data2[key]) {
+      if (typeof data1[key] === 'object' && data1[key] !== null && typeof data2[key] === 'object' && data2[key] !== null) {
+        return { key, type: 'nested', children: buildDiff(data1[key], data2[key]) };
+      }
+      return {
+        key, type: 'changed', value1: data1[key], value2: data2[key],
+      };
     }
-    return `    ${key}: ${file1[key]}`;
+    return { key, type: 'unchanged', value: data1[key] };
   });
+};
 
-  return `{\n${diffLines.join('\n')}\n}`;
+const genDiff = (file1Path, file2Path, format = 'stylish') => {
+  const data1 = parseFile(file1Path);
+  const data2 = parseFile(file2Path);
+  const diff = {
+    type: 'root',
+    children: buildDiff(data1, data2),
+  };
+
+  return formatDiff(diff, format);
 };
 
 export default genDiff;
