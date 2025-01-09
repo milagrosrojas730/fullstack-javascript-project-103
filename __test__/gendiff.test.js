@@ -1,6 +1,7 @@
 import fs from 'fs';
 import getPath from '../src/getFixturePath.js';
 import genDiff from '../src/index.js';
+import getFixturePath from '../src/getFixturePath.js';
 
 const styres = fs.readFileSync(getPath('stylish.txt'), 'utf8');
 const result = fs.readFileSync(getPath('result.txt'), 'utf8');
@@ -19,12 +20,14 @@ const testGenDiffJSON = (filepath1, filepath2, expectedResult) => {
 };
 
 test('Format for stylish Result - YAML File', () => {
-  const [filepath1, filepath2] = generateFilePaths('file1-y', 'file2-y', 'yaml');
-  testGenDiff(filepath1, filepath2, 'stylish', styres);
+  const filepath1 = getFixturePath('file1.yaml');
+  const filepath2 = getFixturePath('file2.yaml');
+  const expectedResult = fs.readFileSync(getFixturePath('stylish.txt'), 'utf8');
+  expect(genDiff(filepath1, filepath2, 'stylish')).toEqual(expectedResult);
 });
 
 test('Format for Result - YAML File', () => {
-  const [filepath1, filepath2] = generateFilePaths('file1-y', 'file2-y', 'yaml');
+  const [filepath1, filepath2] = generateFilePaths('file1', 'file2', 'yaml');
   testGenDiff(filepath1, filepath2, 'plain', result);
 });
 
