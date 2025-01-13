@@ -7,7 +7,7 @@
     "type":"added","value":false},
     {"key":"setting1",
         "type":"unchanged",
-        "value":"Value 1"},
+        "value":"Value 1"}, 
     {"key":"setting2",
         "type":"deleted",
         "value":200},
