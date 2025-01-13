@@ -1,5 +1,4 @@
 import _ from 'lodash';
-import { stylish } from './stylish.js';
 
 const getIndent = (depth, spaces = 4) => ' '.repeat(Math.max(0, depth * spaces - 2));
 
@@ -14,8 +13,8 @@ const stringify = (value, depth) => {
 };
 
 const stylish = (tree, depth = 1) => {
-const indent = getIndent(depth);
-const closingIndent = getIndent(depth - 1);
+  const indent = getIndent(depth);
+  const closingIndent = getIndent(depth - 1);
 
   const lines = tree.map((node) => {
     switch (node.type) {
@@ -39,4 +38,5 @@ const closingIndent = getIndent(depth - 1);
 
   return `{\n${lines.join('\n')}\n${closingIndent}}`;
 };
+
 export default stylish;
