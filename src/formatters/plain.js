@@ -26,11 +26,8 @@ const nodeHandlers = {
   },
   [DELETED_VALUE]: (node, path) => {
     const propertyPath = buildPropertyPath(node.key, path);
-    if (_.isObject(node.value)) {
-      return `Property '${propertyPath}' was removed`;
-    }
     return `Property '${propertyPath}' was removed`;
-  },  
+  },
   [NESTED_VALUE]: ({ key, children }, path, traverse) => (
     children.flatMap((child) => traverse(child, [...path, key]))
   ),
@@ -41,10 +38,8 @@ const nodeHandlers = {
 };
 
 const plain = (diff) => {
-  const traverse = (node, currentPath) => {
-  console.log('Processing node:', node);
-  return nodeHandlers[node.type](node, currentPath, traverse);
+  const traverse = (node, currentPath) => nodeHandlers[node.type](node, currentPath, traverse);
+  return traverse(diff, []).join('\n');
 };
-return traverse(diff,[]).join('\n');
-};
+
 export default plain;
