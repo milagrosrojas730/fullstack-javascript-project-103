@@ -1,7 +1,6 @@
 import _ from 'lodash';
 
 const getIndent = (depth, spaces = 4) => ' '.repeat(Math.max(0, depth * spaces - 2));
-
 const stringify = (value, depth) => {
   if (!_.isObject(value)) return String(value);
 
@@ -11,8 +10,11 @@ const stringify = (value, depth) => {
     .map(([key, val]) => `${indent}  ${key}: ${stringify(val, depth + 1)}`);
   return `{\n${lines.join('\n')}\n${closingIndent}  }`;
 };
-
 const stylish = (tree, depth = 1) => {
+  if (!Array.isArray(tree)) {
+    throw new TypeError(`Expected tree to be an array, but received ${typeof tree}`);
+  }
+
   const indent = getIndent(depth);
   const closingIndent = getIndent(depth - 1);
 
@@ -35,8 +37,6 @@ const stylish = (tree, depth = 1) => {
         throw new Error(`Unknown type: ${node.type}`);
     }
   });
-
   return `{\n${lines.join('\n')}\n${closingIndent}}`;
 };
-
 export default stylish;
