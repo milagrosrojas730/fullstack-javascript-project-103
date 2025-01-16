@@ -22,8 +22,8 @@
     },
     "group3": {
     "deep": {
-    "id": {
-    "number": 45
+        "id": {
+        "number": 45
         }
     },
     "fee": 100500

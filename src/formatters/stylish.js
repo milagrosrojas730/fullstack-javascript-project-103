@@ -1,42 +1,46 @@
 import _ from 'lodash';
 
-const getIndent = (depth, spaces = 4) => ' '.repeat(Math.max(0, depth * spaces - 2));
-const stringify = (value, depth) => {
-  if (!_.isObject(value)) return String(value);
+const getIndentation = (depth, spacesCount = 4) => ' '.repeat(Math.max(0, depth * spacesCount - 2));
 
-  const indent = getIndent(depth + 1);
-  const closingIndent = getIndent(depth);
-  const lines = Object.entries(value)
-    .map(([key, val]) => `${indent}  ${key}: ${stringify(val, depth + 1)}`);
-  return `{\n${lines.join('\n')}\n${closingIndent}  }`;
+const formatValue = (data, depth) => {
+  if (!_.isObject(data)) return String(data);
+
+  const entries = Object.entries(data)
+    .map(([key, value]) => `${getIndentation(depth + 1)}  ${key}: ${formatValue(value, depth + 1)}`);
+
+  return `{\n${entries.join('\n')}\n${getIndentation(depth)}  }`;
 };
-const stylish = (tree, depth = 1) => {
-  if (!Array.isArray(tree)) {
-    throw new TypeError(`Expected tree to be an array, but received ${typeof tree}`);
-  }
+const renderNode = (node, depth, iterate) => {
+  const indent = getIndentation(depth);
 
-  const indent = getIndent(depth);
-  const closingIndent = getIndent(depth - 1);
-
-  const lines = tree.map((node) => {
-    switch (node.type) {
-      case 'added':
-        return `${indent}+ ${node.key}: ${stringify(node.value, depth)}`;
-      case 'deleted':
-        return `${indent}- ${node.key}: ${stringify(node.value, depth)}`;
-      case 'unchanged':
-        return `${indent}  ${node.key}: ${stringify(node.value, depth)}`;
-      case 'changed':
-        return [
-          `${indent}- ${node.key}: ${stringify(node.value1, depth)}`,
-          `${indent}+ ${node.key}: ${stringify(node.value2, depth)}`,
-        ].join('\n');
-      case 'nested':
-        return `${indent}  ${node.key}: {\n${stylish(node.children, depth + 1)}\n${indent}  }`;
-      default:
-        throw new Error(`Unknown type: ${node.type}`);
+  switch (node.type) {
+    case 'root': {
+      const renderedChildren = node.children.flatMap((child) => iterate(child, depth + 1));
+      return `{\n${renderedChildren.join('\n')}\n}`;
     }
-  });
-  return `{\n${lines.join('\n')}\n${closingIndent}}`;
+    case 'nested': {
+      const nestedChildren = node.children.flatMap((child) => iterate(child, depth + 1));
+      return `${indent}  ${node.key}: {\n${nestedChildren.join('\n')}\n${indent}  }`;
+    }
+    case 'added':
+      return `${indent}+ ${node.key}: ${formatValue(node.value, depth)}`;
+    case 'deleted':
+      return `${indent}- ${node.key}: ${formatValue(node.value, depth)}`;
+    case 'unchanged':
+      return `${indent}  ${node.key}: ${formatValue(node.value, depth)}`;
+    case 'changed': {
+      const formattedValue1 = `${indent}- ${node.key}: ${formatValue(node.value1, depth)}`;
+      const formattedValue2 = `${indent}+ ${node.key}: ${formatValue(node.value2, depth)}`;
+      return [formattedValue1, formattedValue2].join('\n');
+    }
+    default:
+      throw new Error(`Unknown type: ${node.type}`);
+  }
 };
-export default stylish;
+
+const renderAST = (ast) => {
+  const iterate = (node, depth) => renderNode(node, depth, iterate);
+  return iterate(ast, 0);
+};
+
+export default renderAST;
