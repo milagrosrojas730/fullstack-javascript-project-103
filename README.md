@@ -1,2 +1,2 @@
 [![Actions Status](https://github.com/milagrosrojas730/fullstack-javascript-project-103/actions/workflows/hexlet-check.yml/badge.svg)](https://github.com/milagrosrojas730/fullstack-javascript-project-103/actions)
-[![Coverage Status](https://img.shields.io/codecov/c/github/milagrosrojas730/fullstack-javascript-project-103.svg)](https://codecov.io/gh/milagrosrojas730/fullstack-javascript-project-103)
+<a href="https://codeclimate.com/github/milagrosrojas730/fullstack-javascript-project-103/maintainability"><img src="https://api.codeclimate.com/v1/badges/a77483e3219dc5fc3c1d/maintainability" /></a>
